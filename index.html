@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cove Agency - AI-Assisted Service Inbox Triage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #0f2240;
+      --navy-light: #1a3560;
+      --navy-dark: #091729;
+      --white: #ffffff;
+      --off-white: #f6f5f2;
+      --warm-gray: #eae8e3;
+      --text-dark: #1a1a1a;
+      --text-mid: #4a4a4a;
+      --text-light: #7a7a7a;
+      --rule: #d4d0c8;
+      --accent: #b8a98a;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text-dark);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      line-height: 1.25;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navy);
+      border-bottom: 1px solid var(--navy-light);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-cta {
+      font-size: 0.8125rem !important;
+      font-weight: 600 !important;
+      color: var(--white) !important;
+      border: 1px solid rgba(255,255,255,0.4) !important;
+      padding: 6px 16px;
+      border-radius: 2px;
+      transition: background 0.2s, border-color 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.7) !important;
+    }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 100px 32px 96px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      max-width: 780px;
+      margin: 0 auto 28px;
+      line-height: 1.2;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.78);
+      max-width: 620px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 14px 32px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .hero-btn:hover {
+      background: var(--off-white);
+    }
+
+    /* ─── SECTION BASE ────────────────────────────────────── */
+    section {
+      padding: 88px 32px;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--navy);
+      margin-bottom: 20px;
+    }
+
+    .section-title.light {
+      color: var(--white);
+    }
+
+    .section-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 40px;
+    }
+
+    /* ─── PROBLEM ─────────────────────────────────────────── */
+    .problem {
+      background: var(--off-white);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .problem-list li {
+      display: flex;
+      gap: 16px;
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: var(--text-mid);
+    }
+
+    .problem-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 9px;
+    }
+
+    .problem-context {
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+    }
+
+    /* ─── HOW IT WORKS ────────────────────────────────────── */
+    .how {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .how .section-label {
+      color: var(--accent);
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 28px;
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      align-items: start;
+    }
+
+    .step:first-child {
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .step-num {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      padding-top: 4px;
+    }
+
+    .step-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.7;
+    }
+
+    /* ─── PILOT INCLUDES ──────────────────────────────────── */
+    .pilot {
+      background: var(--white);
+    }
+
+    .pilot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .pilot-item {
+      background: var(--off-white);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 24px 28px;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .pilot-item::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── IMPROVES ────────────────────────────────────────── */
+    .improves {
+      background: var(--off-white);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .improves-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .improve-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 28px;
+    }
+
+    .improve-icon {
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .improve-card p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+    }
+
+    /* ─── GUARDRAILS ──────────────────────────────────────── */
+    .guardrails {
+      background: var(--navy-dark);
+      color: var(--white);
+    }
+
+    .guardrails .section-label {
+      color: var(--accent);
+    }
+
+    .guardrails-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .guardrail-card {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      padding: 28px 24px;
+    }
+
+    .guardrail-card p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.65;
+    }
+
+    /* ─── PRICING ─────────────────────────────────────────── */
+    .pricing {
+      background: var(--white);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .pricing-box {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 2px;
+      padding: 48px 40px;
+    }
+
+    .pricing-amount {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .pricing-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .pricing-note {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    .timeline-box {
+      padding: 8px 0;
+    }
+
+    .timeline-box .tl-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .timeline-box .tl-value {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .timeline-box p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    /* ─── CTA ─────────────────────────────────────────────── */
+    .cta {
+      background: var(--off-white);
+      border-top: 1px solid var(--rule);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.5rem, 3vw, 2.125rem);
+      color: var(--navy);
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .cta p {
+      font-size: 1rem;
+      color: var(--text-mid);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .cta-btn:hover {
+      background: var(--navy-light);
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--navy-dark);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 32px;
+      font-size: 0.8125rem;
+      letter-spacing: 0.02em;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--white);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 64px 20px;
+      }
+
+      .hero {
+        padding: 72px 20px 68px;
+      }
+
+      .problem-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .step {
+        grid-template-columns: 40px 1fr;
+        gap: 20px;
+        padding: 28px 0;
+      }
+
+      .step-num {
+        font-size: 1.4rem;
+      }
+
+      .pricing-box {
+        padding: 36px 28px;
+      }
+
+      .pricing-amount {
+        font-size: 2.25rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-inner {
+        padding: 0 20px;
+      }
+
+      .pilot-grid,
+      .improves-grid,
+      .guardrails-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Cove Agency</a>
+      <ul class="nav-links">
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#pilot">Pilot</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact" class="nav-cta">Get Started</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <span class="hero-eyebrow">For Independent Insurance Agencies</span>
+    <h1>AI-Assisted Service Inbox Triage for Independent Insurance Agencies</h1>
+    <p class="hero-sub">
+      Shared service inboxes create delays, inconsistent routing, and poor visibility into open requests. Cove Agency implements a focused workflow to bring structure, speed, and control to inbound service work.
+    </p>
+    <a href="#contact" class="hero-btn">See If This Fits Your Agency</a>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem" id="problem">
+    <div class="section-inner">
+      <div class="problem-grid">
+        <div>
+          <span class="section-label">The Problem</span>
+          <h2 class="section-title">How agencies handle service requests today</h2>
+          <div class="section-rule"></div>
+          <p class="problem-context">
+            Most agencies rely on informal processes that work until they don't. As volume grows, the gaps become costly - requests fall through, response times slip, and your team lacks the visibility to stay ahead of it.
+          </p>
+        </div>
+        <ul class="problem-list">
+          <li>Shared inbox monitoring with no structure or ownership</li>
+          <li>Manual sorting and scattered follow-up across the team</li>
+          <li>Limited visibility into open requests and their status</li>
+          <li>Inconsistent handling depending on who picks it up first</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-inner">
+      <span class="section-label">How It Works</span>
+      <h2 class="section-title light">A five-step workflow built for agency service teams</h2>
+      <div class="section-rule"></div>
+      <div class="steps">
+
+        <div class="step">
+          <span class="step-num">01</span>
+          <div>
+            <p class="step-title">Incoming emails are captured</p>
+            <p class="step-desc">New service emails are monitored directly from the shared inbox as they arrive.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">02</span>
+          <div>
+            <p class="step-title">Sensitive requests are screened</p>
+            <p class="step-desc">Higher-risk emails are identified and blocked before reaching AI. They are routed immediately for human review.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">03</span>
+          <div>
+            <p class="step-title">Safe requests are organized</p>
+            <p class="step-desc">Routine requests are categorized and logged into a structured queue - no more manual sorting.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">04</span>
+          <div>
+            <p class="step-title">The team gets a clear operational queue</p>
+            <p class="step-desc">Staff see what came in, what needs review, what was blocked, and what has a draft ready - all in one place.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">05</span>
+          <div>
+            <p class="step-title">Drafts are prepared, not sent</p>
+            <p class="step-desc">A draft acknowledgment is created for staff review. Nothing goes out without a person approving it first.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PILOT INCLUDES -->
+  <section class="pilot" id="pilot">
+    <div class="section-inner">
+      <span class="section-label">Pilot Includes</span>
+      <h2 class="section-title">Everything needed to go from inbox chaos to structured workflow</h2>
+      <div class="section-rule"></div>
+      <div class="pilot-grid">
+        <div class="pilot-item">1 shared inbox workflow, configured for your team</div>
+        <div class="pilot-item">Routing and classification logic for inbound requests</div>
+        <div class="pilot-item">Airtable queue and operational interface</div>
+        <div class="pilot-item">Human review flow for sensitive messages</div>
+        <div class="pilot-item">Blocked-before-AI safeguards on higher-risk emails</div>
+        <div class="pilot-item">Safe draft creation for routine acknowledgments</div>
+        <div class="pilot-item">Setup testing and team handoff</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT THIS IMPROVES -->
+  <section class="improves" id="improves">
+    <div class="section-inner">
+      <span class="section-label">What This Improves</span>
+      <h2 class="section-title">Measurable changes your team will notice immediately</h2>
+      <div class="section-rule"></div>
+      <div class="improves-grid">
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>Less inbox clutter and fewer messages falling through the cracks</p>
+        </div>
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>Faster routing of routine work -without requiring manual triage</p>
+        </div>
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>Better visibility into open items and where each request stands</p>
+        </div>
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>More consistent handling across your team, regardless of who picks it up</p>
+        </div>
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>Stronger control around sensitive emails - before AI ever touches them</p>
+        </div>
+        <div class="improve-card">
+          <div class="improve-icon"></div>
+          <p>Fewer dropped requests and clearer accountability for follow-up</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARDRAILS -->
+  <section class="guardrails" id="guardrails">
+    <div class="section-inner">
+      <span class="section-label">Built-In Guardrails</span>
+      <h2 class="section-title light">Your team stays in control - by design</h2>
+      <div class="section-rule"></div>
+      <div class="guardrails-grid">
+        <div class="guardrail-card">
+          <p>Sensitive requests are blocked before AI - higher-risk emails never reach automated processing.</p>
+        </div>
+        <div class="guardrail-card">
+          <p>No auto-sending - routine drafts are prepared for review, not delivered automatically.</p>
+        </div>
+        <div class="guardrail-card">
+          <p>Human review remains in control at every decision point in the workflow.</p>
+        </div>
+        <div class="guardrail-card">
+          <p>No replacement of agency judgment - this augments your team's process, not your team's role.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING & TIMELINE -->
+  <section class="pricing" id="pricing">
+    <div class="section-inner">
+      <span class="section-label">Pricing &amp; Timeline</span>
+      <h2 class="section-title">A fixed-scope pilot with a clear start and finish</h2>
+      <div class="section-rule"></div>
+      <div class="pricing-grid">
+        <div class="pricing-box">
+          <div class="pricing-amount">$2,500</div>
+          <div class="pricing-label">Fixed-Scope Pilot</div>
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); line-height:1.7;">
+            One flat fee covering the full pilot scope - no hourly billing, no scope creep, no surprises.
+          </p>
+          <div class="pricing-note">
+            Optional ongoing support is available after the pilot is complete, if your team wants continued assistance.
+          </div>
+        </div>
+        <div class="timeline-box">
+          <p class="tl-label">Timeline</p>
+          <p class="tl-value">2 - 4 weeks</p>
+          <p>
+            The pilot runs on a fixed timeline from kickoff through testing and handoff. You'll have a working workflow, not a proposal, by the end.
+          </p>
+          <br />
+          <p style="color:var(--text-light); font-size:0.85rem;">
+            Scope includes setup, configuration, integration with your existing inbox, testing, and a documented handoff to your team.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="section-inner">
+      <h2>See if this pilot fits your agency</h2>
+      <p>
+        If your team is managing service requests through a shared inbox with no clear process, this pilot was built for you.
+      </p>
+      <a href="mailto:coveagencyco@gmail.com?subject=Inbox%20Triage%20Pilot%20Inquiry" class="cta-btn">Book a 15-Minute Intro Call</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Cove Agency &nbsp;-&nbsp; <a href="https://coveagency.co" target="_blank" rel="noopener">coveagency.co</a></p>
+  </footer>
+
+</body>
+</html>
