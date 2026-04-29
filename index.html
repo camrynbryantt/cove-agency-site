@@ -160,6 +160,26 @@
       background: var(--off-white);
     }
 
+    .hero-btn-ghost {
+      display: inline-block;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 11px 28px;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .hero-btn-ghost:hover {
+      border-color: rgba(255,255,255,0.75);
+      background: rgba(255,255,255,0.07);
+    }
+
     /* ─── SECTION BASE ────────────────────────────────────── */
     section {
       padding: 88px 32px;
@@ -240,6 +260,19 @@
       font-size: 0.9375rem;
       line-height: 1.8;
       color: var(--text-mid);
+    }
+
+    /* ─── BEST FIT ───────────────────────────────────────── */
+    .best-fit {
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .best-fit-body {
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 680px;
     }
 
     /* ─── HOW IT WORKS ────────────────────────────────────── */
@@ -587,12 +620,14 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <span class="hero-eyebrow">For Independent Insurance Agencies</span>
-    <h1>AI-Assisted Service Inbox Triage for Independent Insurance Agencies</h1>
+    <span class="hero-eyebrow">AI-assisted workflow support for shared service inboxes</span>
+    <h1>Service Inbox Triage for Independent Insurance Agencies</h1>
     <p class="hero-sub">
       Shared service inboxes create delays, inconsistent routing, and poor visibility into open requests. Cove Agency implements a focused workflow to bring structure, speed, and control to inbound service work.
     </p>
     <a href="#contact" class="hero-btn">See If This Fits Your Agency</a>
+    <br /><br />
+    <a href="https://www.loom.com/share/90c7372d792f47c28c34f5ca2ac6310b" target="_blank" rel="noopener" class="hero-btn-ghost">Watch the 5-Minute Demo</a>
   </section>
 
   <!-- PROBLEM -->
@@ -614,6 +649,18 @@
           <li>Inconsistent handling depending on who picks it up first</li>
         </ul>
       </div>
+    </div>
+  </section>
+
+  <!-- BEST FIT -->
+  <section class="best-fit" id="best-fit">
+    <div class="section-inner">
+      <span class="section-label">Best Fit</span>
+      <h2 class="section-title">Is this pilot right for your agency?</h2>
+      <div class="section-rule"></div>
+      <p class="best-fit-body">
+        This pilot is a good fit for agencies that use a shared service inbox, manually sort requests, lack visibility into open items, and want better routing without replacing their AMS.
+      </p>
     </div>
   </section>
 
@@ -682,7 +729,7 @@
         <div class="pilot-item">Human review flow for sensitive messages</div>
         <div class="pilot-item">Blocked-before-AI safeguards on higher-risk emails</div>
         <div class="pilot-item">Safe draft creation for routine acknowledgments</div>
-        <div class="pilot-item">Setup testing and team handoff</div>
+        <div class="pilot-item">Setup, testing, and team handoff.</div>
       </div>
     </div>
   </section>
@@ -700,7 +747,7 @@
         </div>
         <div class="improve-card">
           <div class="improve-icon"></div>
-          <p>Faster routing of routine work -without requiring manual triage</p>
+          <p>Faster routing of routine work without requiring manual triage</p>
         </div>
         <div class="improve-card">
           <div class="improve-icon"></div>
@@ -756,7 +803,7 @@
           <div class="pricing-amount">$2,500</div>
           <div class="pricing-label">Fixed-Scope Pilot</div>
           <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); line-height:1.7;">
-            One flat fee covering the full pilot scope - no hourly billing, no scope creep, no surprises.
+            One flat fee covering the full pilot scope, with no hourly billing, no scope creep, and no surprises.
           </p>
           <div class="pricing-note">
             Optional ongoing support is available after the pilot is complete, if your team wants continued assistance.
@@ -784,7 +831,7 @@
       <p>
         If your team is managing service requests through a shared inbox with no clear process, this pilot was built for you.
       </p>
-      <a href="https://calendly.com/coveagencyco/15-minute-intro-call" class="cta-btn" target="_blank" rel="noopener">Book a 15-Minute Intro Call</a>
+      <a href="mailto:coveagencyco@gmail.com?subject=Inbox%20Triage%20Pilot%20Inquiry" class="cta-btn">Book a 15-Minute Intro Call</a>
     </div>
   </section>
 
